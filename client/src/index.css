@@ -1,0 +1,19 @@
+body {
+  font-size: 20px;
+  line-height: 28px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  transition: .1s ease-in;
+  outline: none;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}

@@ -1,0 +1,14 @@
+.header {
+    font-weight: bold;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid black;
+}
+
+.cell {
+    flex: 1;
+}

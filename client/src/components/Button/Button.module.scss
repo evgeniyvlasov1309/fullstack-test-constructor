@@ -1,0 +1,55 @@
+
+.button {
+    display: block;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid sandybrown;
+    border-radius: 10px;
+    height: 40px;
+    padding: 0 15px;
+    user-select: none;
+    
+    &:hover {
+        background-color: sandybrown;
+    }
+
+    &:focus {
+        border-color: black;
+    }
+}
+
+.icon {
+    display: block;
+    border: 0;
+    padding: 0;
+    background-position: center center;
+    cursor: pointer;
+}
+
+.icon-remove {
+    composes: icon;
+    width: 30px;
+    height: 30px;
+    background: url('../../assets/images/delete.svg');
+}
+
+.icon-open {
+    composes: icon;
+    width: 30px;
+    height: 30px;
+    background: url('../../assets/images/open.svg');
+}
+
+.link {
+    display: block;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    text-decoration: underline;
+    color: sandybrown;
+
+    &:hover,
+    &:focus {
+        color: black;
+    }
+}

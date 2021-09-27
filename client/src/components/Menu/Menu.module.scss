@@ -1,0 +1,45 @@
+.img {
+  display: block;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+
+  &:hover,
+  &:focus {
+    color: sandybrown;
+  }
+}
+
+.list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding: 20px;
+  margin: 0;
+  border-radius: 10px;
+  background-color: antiquewhite;
+  border: 2px solid sandybrown;
+  list-style: none;
+  opacity: 0;
+  z-index: -1;
+}
+
+.container {
+  position: relative;
+
+  &:hover {
+    .list {
+      opacity: 1;
+      z-index: 1;
+    }
+  }
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
