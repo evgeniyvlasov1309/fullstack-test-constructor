@@ -9,11 +9,11 @@ import styles from "./Header.module.scss";
 
 function Header() {
   const isAuth = useSelector(isAuthSelector);
-  const isLoginPage = useRouteMatch('/login');
+  const isRegistrationPage = useRouteMatch('/registration');
   const history = useHistory();
 
   function onClick() {
-    history.push(isLoginPage ? '/registration' : '/login');
+    history.push(isRegistrationPage ? '/login' : '/registration');
   }
 
   return (
@@ -24,7 +24,7 @@ function Header() {
             <Menu />
           ) : (
             <Button className={styles.button} onClick={onClick}>
-              {isLoginPage ? 'Регистрация' : 'Вход'}
+              {!isRegistrationPage ? 'Регистрация' : 'Вход'}
             </Button>
           )}
         </div>

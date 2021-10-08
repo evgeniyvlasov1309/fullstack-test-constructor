@@ -1,96 +1,70 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { Router, Switch, Route } from "react-router";
 import Container from "../components/Container/Container";
 import Header from "../components/Header/Header";
 import Tests from "./Tests/Tests.page";
 import Login from "./Login/Login.page";
-import TestDetail from "./TestDetail/TestDetail.page";
 import CompletedTests from "./CompletedTests/CompletedTests.page";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth } from "./Login/Login.actions";
-import { isAuthSelector } from "./Login/Login.selectors";
+import { checkAuth, createLoginRequestError } from "./Login/Login.actions";
+import { isAuthLoading, isAuthSelector } from "./Login/Login.selectors";
+import history from "../history";
+import Loading from "../components/Loading/Loading";
+import EditTestPage from "./TestDetail/EditTest/EditTest.page";
+import CreateTestPage from "./TestDetail/CreateTest/CreateTest.page";
 
 function Root() {
   const dispatch = useDispatch();
   const isAuth = useSelector(isAuthSelector);
-
-  function unauthMiddleware(component: React.ReactFragment) {
-    return () =>
-      isAuth ? (
-        <Redirect
-          to={{
-            pathname: "/",
-          }}
-        />
-      ) : (
-        component
-      );
-  }
+  const loading = useSelector(isAuthLoading);
 
   function authMiddleware(component: React.ReactFragment) {
-    return () =>
-      isAuth ? (
-        component
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/login",
-          }}
-        />
-      );
+    return () => (isAuth === false ? <Login/> : component);
   }
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(checkAuth());
+    } else {
+      dispatch(createLoginRequestError());
     }
   }, [dispatch]);
 
   return (
-    <Router>
+    <Router history={history}>
       <div className="app">
-        <Header />
-        <Container>
-          <Switch>
-            <Route
-              exact
-              path="/login"
-              render={unauthMiddleware(<Login />)}
-            />
-            <Route
-              exact
-              path="/registration"
-              render={unauthMiddleware(<Login />)}
-            />
-            <Route
-              exact
-              path="/reset-password"
-              render={unauthMiddleware(<Login />)}
-            />
-            <Route
-              exact
-              path="/change-password/:id"
-              render={unauthMiddleware(<Login />)}
-            />
-            <Route exact render={authMiddleware(<Tests />)} path="/" />
-            <Route
-              exact
-              render={authMiddleware(<CompletedTests />)}
-              path="/tests/completed"
-            />
-            <Route
-              exact
-              render={authMiddleware(<TestDetail />)}
-              path="/tests/:id"
-            />
-            <Route exact render={authMiddleware(<Tests />)} path="/tests" />
-          </Switch>
-        </Container>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <Header />
+            <Container>
+              <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/registration" component={Login} />
+                <Route exact path="/reset-password" component={Login} />
+                <Route exact path="/change-password/:id" component={Login} />
+                <Route exact render={authMiddleware(<Tests />)} path="/" />
+                <Route
+                  exact
+                  render={authMiddleware(<CompletedTests />)}
+                  path="/tests/completed"
+                />
+                <Route
+                  exact
+                  render={authMiddleware(<CreateTestPage />)}
+                  path="/tests/create"
+                />
+                <Route
+                  exact
+                  render={authMiddleware(<EditTestPage />)}
+                  path="/tests/:id"
+                />
+                <Route exact render={authMiddleware(<Tests />)} path="/tests" />
+              </Switch>
+            </Container>
+          </>
+        )}
       </div>
     </Router>
   );

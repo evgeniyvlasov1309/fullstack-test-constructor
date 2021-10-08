@@ -1,71 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import Button from "../../components/Button/Button";
-import { ColumnDefinition } from "../../components/Table/contracts/TableDefinition";
 import Table from "../../components/Table/Table";
-import { Test } from "../../models/Test";
+import { tableDefs } from "./components/TestsTableDefs";
+import { deleteTestRequest, fetchTestsRequest } from "./Tests.actions";
 import styles from "./Tests.module.scss";
+import { testsSelector } from "./Tests.selectors";
+import { TestsState } from "./Tests.state";
 
-function Tests() {
-  const tableData = [
-    {
-      id: 1,
-      name: "Тест 1",
-      createdAt: "03.06.2021",
-      amountOfUsers: 5,
-    },
-    {
-      id: 2,
-      name: "Тест 2",
-      createdAt: "04.06.2021",
-      amountOfUsers: 7,
-    },
-    {
-      id: 3,
-      name: "Тест 3",
-      createdAt: "08.09.2021",
-      amountOfUsers: 11,
-    },
-  ];
+export interface TestsPageState {
+  tests: TestsState;
+}
 
-  function tableDefs(props: any):ColumnDefinition[] {
-    return [
-      {
-        title: "Название",
-        field: "name",
-      },
-      {
-        title: "Дата создания",
-        field: "createdAt",
-      },
-      {
-        title: "Кол-во участников",
-        field: "amountOfUsers",
-      },
-      {
-        title: "Действия",
-        field: "",
-        cssHeaderClass: styles.center,
-        cellRenderer: (item: Test) => {
-          return (
-            <div className={styles.actions}>
-              <Button variant="icon-open" onClick={() => {}}></Button>
-              <Button variant="icon-remove" onClick={() => {}}></Button>
-            </div>
-          );
-        },
-      },
-    ];
+interface TestsPageProps {
+  fetchTests: () => void;
+  deleteTest: (id: string) => void;
+}
+
+function Tests(props: TestsPageProps) {
+  const { fetchTests, deleteTest } = props;
+  const tableData = useSelector(testsSelector);
+  const history = useHistory();
+
+  useEffect(() => {
+    fetchTests();
+  }, [fetchTests]);
+
+  function onCreate() {
+    history.push('/tests/create');
+  }
+
+  function openTest(id: string) {
+    history.push(`/tests/${id}`);
   }
 
   return (
     <>
       <div className={styles.header}>
         <div className={styles.title}>Мои тесты</div>
-        <Button onClick={() => {}}>Создать</Button>
+        <Button onClick={onCreate}>Создать</Button>
       </div>
-      <Table data={tableData} defs={tableDefs({})} />
+      <Table data={tableData} defs={tableDefs({
+        deleteTest,
+        openTest
+      })} />
     </>
   );
 }
 
-export default Tests;
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchTests: () =>
+    dispatch(fetchTestsRequest()),
+  deleteTest: (id: string) =>
+    dispatch(deleteTestRequest(id)),
+});
+
+export default connect(null, mapDispatchToProps)(Tests);

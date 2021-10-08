@@ -2,11 +2,13 @@ import { User } from "../../models/User";
 
 export interface LoginState {
     user: User;
-    isAuth: Boolean
+    isAuth: Boolean | null;
+    loading: Boolean;
 }
 export function getDefaultState(): LoginState {
     return {
         user: {} as User,
-        isAuth: false
+        isAuth: null,
+        loading: true
     };
 }

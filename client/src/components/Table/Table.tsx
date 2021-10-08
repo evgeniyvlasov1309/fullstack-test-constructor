@@ -25,6 +25,7 @@ function Table(props: TableProps) {
         {data.map((item: any) => (
           <TableItem data={item} defs={defs} key={item.id} />
         ))}
+        {!data.length && <div className={styles['no-data']}>Нет данных</div>}
       </div>
     </div>
   );

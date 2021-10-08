@@ -1,4 +1,7 @@
 .content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
     padding: 20px 30px;
     border-radius: 20px;
     background-color: antiquewhite;
@@ -10,4 +13,9 @@
   line-height: 30px;
   font-weight: 600;
   margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  margin-left: auto;
 }

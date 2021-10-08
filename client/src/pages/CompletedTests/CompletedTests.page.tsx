@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../../components/Button/Button";
 import { ColumnDefinition } from "../../components/Table/contracts/TableDefinition";
 import Table from "../../components/Table/Table";
-import { Test } from "../../models/Test";
+import { TestModel } from "../../models/Test";
 import styles from "./CompletedTests.module.scss";
 
 function Tests() {
@@ -45,7 +45,7 @@ function Tests() {
         title: "Действия",
         field: "",
         cssHeaderClass: styles.center,
-        cellRenderer: (item: Test) => {
+        cellRenderer: (item: TestModel) => {
           return (
             <div className={styles.actions}>
               <Button onClick={() => {}}>Открыть</Button>

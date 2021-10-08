@@ -20,7 +20,6 @@ interface LoginFormProps {
 
 function LoginForm(props: LoginFormProps) {
   const { login, registration, resetPassword, changePassword } = props;
-  const isLoginPage = useRouteMatch("/login");
   const isRegistrationPage = useRouteMatch("/registration");
   const isResetPasswordPage = useRouteMatch("/reset-password");
   const isChangePasswordPage = useRouteMatch("/change-password");
@@ -32,21 +31,17 @@ function LoginForm(props: LoginFormProps) {
 
   const title = (() => {
     switch (true) {
-      case !!isLoginPage:
-        return "Вход";
       case !!isRegistrationPage:
         return "Регистрация";
       case !!isResetPasswordPage || !!isChangePasswordPage:
         return "Восстановление пароля";
       default:
-        break;
+        return "Вход";
     }
   })();
 
   const submitText = (() => {
     switch (true) {
-      case !!isLoginPage:
-        return "Войти";
       case !!isRegistrationPage:
         return "Зарегистрироваться";
       case !!isResetPasswordPage:
@@ -54,16 +49,13 @@ function LoginForm(props: LoginFormProps) {
       case !!isChangePasswordPage:
         return "Сменить пароль";
       default:
-        break;
+        return "Войти";
     }
   })();
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     switch (true) {
-      case !!isLoginPage:
-        login(email, password);
-        break;
       case !!isRegistrationPage:
         registration(email, password);
         break;
@@ -74,6 +66,7 @@ function LoginForm(props: LoginFormProps) {
         changePassword(password, id);
         break;
       default:
+        login(email, password)
         break;
     }
   }
@@ -91,7 +84,6 @@ function LoginForm(props: LoginFormProps) {
             type="text"
             value={email}
             name="email"
-            variant="textfield"
             className={styles.field}
             placeholder="Email"
             autoFocus={true}
@@ -105,8 +97,6 @@ function LoginForm(props: LoginFormProps) {
           <Input
             type="password"
             value={password}
-            name="password"
-            variant="textfield"
             className={styles.field}
             placeholder="Пароль"
             autoComplete="on"
@@ -117,7 +107,7 @@ function LoginForm(props: LoginFormProps) {
         )}
       </div>
       <div className={styles.footer}>
-        {isLoginPage && (
+        {!isRegistrationPage && !isResetPasswordPage && !isChangePasswordPage && (
           <Button variant="link" onClick={onPasswordForgot}>
             Забыли пароль
           </Button>
