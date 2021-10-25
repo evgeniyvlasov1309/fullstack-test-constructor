@@ -54,14 +54,10 @@ class QuestionService {
 
     async deleteQuestion(id) {
         const questionData = await QuestionModel.findByIdAndDelete(id);
-        await deleteAnswers(questionData);
-        return questionData;
-    }
-
-    async deleteAnswers(questionData) {
-        return await Promise.all(questionData.answers.map(async ({ _id }) => {
+        await Promise.all(questionData.answers.map(async ({ _id }) => {
             return await AnswerModel.findByIdAndDelete(_id);
         }));
+        return questionData;
     }
 }
 

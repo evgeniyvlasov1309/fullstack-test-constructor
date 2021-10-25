@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import Table from "../../components/Table/Table";
 import { tableDefs } from "./components/TestsTableDefs";
-import { deleteTestRequest, fetchTestsRequest } from "./Tests.actions";
+import { deleteTestRequest, fetchTestsRequest } from "./Tests.thunks";
 import styles from "./Tests.module.scss";
 import { testsSelector } from "./Tests.selectors";
 import { TestsState } from "./Tests.state";
@@ -32,6 +32,10 @@ function Tests(props: TestsPageProps) {
   }
 
   function openTest(id: string) {
+    history.push(`/tests/${id}/execute`);
+  }
+
+  function editTest(id: string) {
     history.push(`/tests/${id}`);
   }
 
@@ -43,6 +47,7 @@ function Tests(props: TestsPageProps) {
       </div>
       <Table data={tableData} defs={tableDefs({
         deleteTest,
+        editTest,
         openTest
       })} />
     </>

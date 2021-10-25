@@ -53,9 +53,23 @@ class TestController {
         }
     }
 
+    async completeTest(req, res, next) {
+        try {
+            const userId = req.user.id;
+            const { id } = req.params;
+            const { answers } = req.body;
+            const testData = await testService.completeTest(userId, id, answers);
+            return res.json(testData);
+        } catch (e) {
+            next(e);
+        }
+    }
+
     async getCompletedTests(req, res, next) {
         try {
-
+            const userId = req.user.id;
+            const testData = await testService.getCompletedTests(userId);
+            return res.json(testData);
         } catch (e) {
             next(e);
         }
@@ -63,7 +77,9 @@ class TestController {
 
     async getCompletedTestById(req, res, next) {
         try {
-
+            const { id } = req.params;
+            const testData = await testService.getCompletedTestById(id);
+            return res.json(testData);
         } catch (e) {
             next(e);
         }

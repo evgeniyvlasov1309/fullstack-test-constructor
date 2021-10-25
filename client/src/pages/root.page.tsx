@@ -6,12 +6,15 @@ import Tests from "./Tests/Tests.page";
 import Login from "./Login/Login.page";
 import CompletedTests from "./CompletedTests/CompletedTests.page";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth, createLoginRequestError } from "./Login/Login.actions";
+import { createLoginRequestError } from "./Login/Login.actions";
 import { isAuthLoading, isAuthSelector } from "./Login/Login.selectors";
 import history from "../history";
 import Loading from "../components/Loading/Loading";
 import EditTestPage from "./TestDetail/EditTest/EditTest.page";
 import CreateTestPage from "./TestDetail/CreateTest/CreateTest.page";
+import { checkAuth } from "./TestDetail/EditTest/EditTest.thunks";
+import ExecuteTestPage from "./TestDetail/ExecuteTest/ExecuteTest.page";
+import CompletedTestPage from "./TestDetail/CompletedTest/CompletedTest.page";
 
 function Root() {
   const dispatch = useDispatch();
@@ -52,6 +55,11 @@ function Root() {
                 />
                 <Route
                   exact
+                  render={authMiddleware(<CompletedTestPage />)}
+                  path="/tests/completed/:id"
+                />
+                <Route
+                  exact
                   render={authMiddleware(<CreateTestPage />)}
                   path="/tests/create"
                 />
@@ -59,6 +67,11 @@ function Root() {
                   exact
                   render={authMiddleware(<EditTestPage />)}
                   path="/tests/:id"
+                />
+                 <Route
+                  exact
+                  render={authMiddleware(<ExecuteTestPage />)}
+                  path="/tests/:id/execute"
                 />
                 <Route exact render={authMiddleware(<Tests />)} path="/tests" />
               </Switch>

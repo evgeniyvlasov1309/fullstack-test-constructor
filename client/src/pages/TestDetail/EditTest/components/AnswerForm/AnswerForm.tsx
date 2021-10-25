@@ -26,8 +26,12 @@ function AnswerForm(props: AnswerFormProps) {
   }, [props.value]);
 
   function onSave() {
-    props.onSave(value, isCorrect);
-    setEditMode(false);
+    try {
+      props.onSave(value, isCorrect);
+      setEditMode(false);
+    } catch (error) {
+      alert(error);
+    }
   }
 
   return (
@@ -47,11 +51,17 @@ function AnswerForm(props: AnswerFormProps) {
           />
         ) : (
           <>
-            <div className={isCorrect ? styles.correct : ''}>
-              {value}
-            </div>
-            <Button className={styles.edit} variant="icon-edit" onClick={() => setEditMode(true)} />
-            <Button className={styles.remove} variant="icon-remove" onClick={onDelete} />
+            <div className={isCorrect ? styles.correct : ""}>{value}</div>
+            <Button
+              className={styles.edit}
+              variant="icon-edit"
+              onClick={() => setEditMode(true)}
+            />
+            <Button
+              className={styles.remove}
+              variant="icon-remove"
+              onClick={onDelete}
+            />
           </>
         )}
       </div>

@@ -14,8 +14,8 @@ function Table(props: TableProps) {
     <div className={styles.table}>
       <div className={styles.header}>
         <div className={styles.row}>
-          {defs.map(item => (
-            <div className={`${styles.cell}${item.cssHeaderClass ? ` ${item.cssHeaderClass}` : ""}`} key={item.field}>
+          {defs.map((item, index) => (
+            <div className={`${styles.cell}${item.cssHeaderClass ? ` ${item.cssHeaderClass}` : ""}`} key={index}>
               {item.title}
             </div>
           ))}

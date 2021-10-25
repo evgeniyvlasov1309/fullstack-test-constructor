@@ -2,7 +2,7 @@ import { ActionType } from "../../../store/rootReducer";
 import { CLEAR_TEST_REQUEST, FETCH_TEST_REQUEST_SUCCESS } from "./EditTest.actions";
 import { getDefaultState, EditTestState } from "./EditTest.state";
 
-export default function EditTestReducer(state: EditTestState = getDefaultState(), action: ActionType) {
+export default function editTestReducer(state: EditTestState = getDefaultState(), action: ActionType) {
     switch(action.type) {
         case FETCH_TEST_REQUEST_SUCCESS:
             return {

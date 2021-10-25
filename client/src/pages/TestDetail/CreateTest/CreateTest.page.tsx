@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
-import { createTestRequest } from "./CreateTest.actions";
+import { createTestRequest } from "./CreateTest.thunks";
 import styles from "./CreateTest.module.scss";
 
 interface CreateTestPageProps {

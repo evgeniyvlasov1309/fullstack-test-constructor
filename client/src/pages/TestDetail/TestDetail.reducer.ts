@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import EditTestReducer from "./EditTest/EditTest.reducer";
+import completedTestReducer from "./CompletedTest/CompletedTest.reducer";
+import editTestReducer from "./EditTest/EditTest.reducer";
 
 export const testDetailReducer = combineReducers({
-    edit: EditTestReducer,
+    edit: editTestReducer,
+    completed: completedTestReducer
 });

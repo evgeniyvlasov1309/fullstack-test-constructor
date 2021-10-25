@@ -11,7 +11,13 @@ interface QuestionFormProps {
   order: number;
   description: string;
   answers: AnswerModel[];
-  onSave: (id: string, type: string, order: number, description: string, answers: AnswerModel[]) => void;
+  onSave: (
+    id: string,
+    type: string,
+    order: number,
+    description: string,
+    answers: AnswerModel[]
+  ) => void;
 }
 
 function QuestionForm(props: QuestionFormProps) {
@@ -21,10 +27,13 @@ function QuestionForm(props: QuestionFormProps) {
   const [answers, setAnswers] = useState<AnswerModel[]>(props.answers);
 
   function onAddAnswer() {
-    setAnswers([...answers, {
-      value: "",
-      correct: false,
-    } as AnswerModel]);
+    setAnswers([
+      ...answers,
+      {
+        value: "",
+        correct: false,
+      } as AnswerModel,
+    ]);
   }
 
   useEffect(() => {
@@ -32,7 +41,7 @@ function QuestionForm(props: QuestionFormProps) {
       setAnswers([
         {
           value: "",
-          correct: false,
+          correct: true,
         } as AnswerModel,
       ]);
     }
@@ -42,13 +51,26 @@ function QuestionForm(props: QuestionFormProps) {
     onSave(id, type, order, description, answers);
   }
 
+  function validateAnswer(value: string, correct: boolean) {
+    if (
+      correct &&
+      type === "radio" &&
+      answers.find((answer) => answer.correct)
+    ) {
+      throw new Error(
+        'В вопросе типа "одиночный выбор" не может более одного правильного ответа!'
+      );
+    }
+  }
+
   function onAnswerSave(answer: AnswerModel, value: string, correct: boolean) {
+    validateAnswer(value, correct);
     answer.value = value;
     answer.correct = correct;
   }
 
   function onDeleteAnswer(removedAnswer: AnswerModel) {
-    setAnswers(answers.filter(answer => answer !== removedAnswer));
+    setAnswers(answers.filter((answer) => answer !== removedAnswer));
   }
 
   return (
@@ -101,8 +123,7 @@ function QuestionForm(props: QuestionFormProps) {
               value={answer.value}
               correct={answer.correct}
               key={index}
-              onDelete={() => { console.log(answer);
-               onDeleteAnswer(answer) }}
+              onDelete={() => onDeleteAnswer(answer)}
               onSave={(value, correct) => onAnswerSave(answer, value, correct)}
             />
           );
@@ -110,10 +131,7 @@ function QuestionForm(props: QuestionFormProps) {
       </div>
 
       {type !== "input" && (
-        <Button
-          type="button"
-          onClick={onAddAnswer}
-        >
+        <Button type="button" onClick={onAddAnswer}>
           Добавить ответ
         </Button>
       )}

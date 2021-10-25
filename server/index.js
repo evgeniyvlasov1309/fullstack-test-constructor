@@ -8,6 +8,7 @@ const errorMiddleware = require('./middlewares/error-middleware');
 const usersRouter = require('./router/users');
 const testsRouter = require('./router/tests');
 const questionsRouter = require('./router/questions');
+const answerRouter = require('./router/answers');
 
 const authMiddleware = require('./middlewares/auth-middleware');
 
@@ -23,6 +24,7 @@ app.use(cors({
 app.use('/api/users', usersRouter);
 app.use('/api', authMiddleware, testsRouter);
 app.use('/api', authMiddleware, questionsRouter);
+app.use('/api', authMiddleware, answerRouter);
 app.use(errorMiddleware);
 
 const start = async () => {

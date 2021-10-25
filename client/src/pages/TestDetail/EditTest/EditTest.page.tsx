@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  clearTestRequest,
-  createQuestionRequest,
-  deleteQuestionRequest,
-  fetchTestRequest,
-  updateQuestionRequest,
-} from "./EditTest.actions";
 import styles from "./EditTest.module.scss";
 import { QuestionModel } from "../../../models/Question";
 import Button from "../../../components/Button/Button";
@@ -17,6 +10,8 @@ import QuestionForm from "./components/QuestionForm/QuestionForm";
 import { EditTestState } from "./EditTest.state";
 import { AnswerModel } from "../../../models/Answer";
 import { testSelector } from "./EditTest.selectors";
+import { createQuestionRequest, deleteQuestionRequest, fetchTestRequest, updateQuestionRequest } from "./EditTest.thunks";
+import { clearTestRequest } from "./EditTest.actions";
 
 interface TestDetailPageProps {
   fetchTest: (id: string) => void;
@@ -113,6 +108,7 @@ function EditTest(props: TestDetailPageProps) {
               question={question}
               onEdit={() => onEditQuestion(question)}
               onDelete={onDelete}
+              previewMode
               key={question.id}
             />
           );

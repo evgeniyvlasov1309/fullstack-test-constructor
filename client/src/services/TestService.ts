@@ -1,6 +1,8 @@
 import { AxiosResponse } from "axios";
 import $api from "../apiClient";
+import { CompletedTestModel } from "../models/CompletedTest";
 import { TestModel } from "../models/Test";
+import { UserAnswer } from "../models/UserAnswer";
 
 export default class UserService {
     static fetchTests(): Promise<AxiosResponse<TestModel[]>> {
@@ -21,5 +23,17 @@ export default class UserService {
 
     static deleteTest(id: string): Promise<AxiosResponse<TestModel>> {
         return $api.delete<TestModel>(`/tests/${id}`);
+    }
+
+    static completeTest(id: string, answers: UserAnswer[]): Promise<void> {
+        return $api.post(`/tests/${id}`, { answers });
+    }
+
+    static fetchCompletedTests(): Promise<AxiosResponse<CompletedTestModel[]>> {
+        return $api.get<CompletedTestModel[]>('/tests/completed');
+    }
+
+    static fetchCompletedTest(id: string): Promise<AxiosResponse<CompletedTestModel>> {
+        return $api.get<CompletedTestModel>(`/tests/completed/${id}`);
     }
 }

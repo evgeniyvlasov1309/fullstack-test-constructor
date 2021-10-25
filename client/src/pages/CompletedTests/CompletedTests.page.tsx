@@ -1,59 +1,32 @@
-import React from "react";
-import Button from "../../components/Button/Button";
-import { ColumnDefinition } from "../../components/Table/contracts/TableDefinition";
+import React, { useEffect } from "react";
+import { connect, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import Table from "../../components/Table/Table";
-import { TestModel } from "../../models/Test";
 import styles from "./CompletedTests.module.scss";
+import { completedTestsSelector } from "./CompletedTests.selectors";
+import { CompletedTestsState } from "./CompletedTests.state";
+import { fetchCompletedTestsRequest } from "./CompletedTests.thunks";
+import { tableDefs } from "./components/CompletedTestsTableDefs";
 
-function Tests() {
-  const tableData = [
-    {
-      id: 1,
-      name: "Тест 1",
-      dateOfCompletion: "03.06.2021",
-      result: 1,
-    },
-    {
-      id: 2,
-      name: "Тест 2",
-      dateOfCompletion: "04.06.2021",
-      result: 4,
-    },
-    {
-      id: 3,
-      name: "Тест 3",
-      dateOfCompletion: "08.09.2021",
-      result: 25,
-    },
-  ];
+export interface CompletedTestsPageState {
+  completedTests: CompletedTestsState;
+}
 
-  function tableDefs(props: any): ColumnDefinition[] {
-    return [
-      {
-        title: "Название",
-        field: "name",
-      },
-      {
-        title: "Дата прохождения",
-        field: "dateOfCompletion",
-      },
-      {
-        title: "Результат",
-        field: "result",
-      },
-      {
-        title: "Действия",
-        field: "",
-        cssHeaderClass: styles.center,
-        cellRenderer: (item: TestModel) => {
-          return (
-            <div className={styles.actions}>
-              <Button onClick={() => {}}>Открыть</Button>
-            </div>
-          );
-        },
-      },
-    ];
+interface CompletedTestsPageProps {
+  fetchCompletedTests: () => void;
+}
+
+function CompletedTests(props: CompletedTestsPageProps) {
+  const { fetchCompletedTests } = props;
+  const tableData = useSelector(completedTestsSelector);
+  const history = useHistory();
+
+  useEffect(() => {
+    fetchCompletedTests();
+  }, [fetchCompletedTests]);
+
+  function openTest(id: string) {
+    history.push(`/tests/completed/${id}`);
   }
 
   return (
@@ -61,9 +34,13 @@ function Tests() {
       <div className={styles.header}>
         <div className={styles.title}>Пройденные тесты</div>
       </div>
-      <Table data={tableData} defs={tableDefs({})} />
+      <Table data={tableData} defs={tableDefs({ openTest })} />
     </>
   );
 }
 
-export default Tests;
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchCompletedTests: () => dispatch(fetchCompletedTestsRequest()),
+});
+
+export default connect(null, mapDispatchToProps)(CompletedTests);

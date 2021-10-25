@@ -8,7 +8,7 @@ import {
   createLoginRequest,
   createRegistrationRequest,
   createResetPassowrdRequest,
-} from "../../pages/Login/Login.actions";
+} from "../../pages/Login/Login.thunks";
 import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 
 interface LoginFormProps {

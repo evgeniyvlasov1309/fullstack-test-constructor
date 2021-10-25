@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Menu.module.scss";
 import avatarImg from "../../assets/images/avatar.svg";
-import { createLogoutRequest } from "../../pages/Login/Login.actions";
 import { connect, useSelector } from "react-redux";
 import { userSelector } from "../../pages/Login/Login.selectors";
+import { createLogoutRequest } from "../../pages/TestDetail/EditTest/EditTest.thunks";
 
 interface MenuProps {
   logout: () => void;

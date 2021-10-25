@@ -7,10 +7,11 @@ import styles from "../Tests.module.scss";
 interface TestsTableDefsProps {
   deleteTest: (id: string) => void;
   openTest: (id: string) => void;
+  editTest: (id: string) => void;
 }
 
 export function tableDefs(props: TestsTableDefsProps): ColumnDefinition[] {
-  const { deleteTest, openTest } = props;
+  const { deleteTest, editTest, openTest } = props;
   return [
     {
       title: "Название",
@@ -37,7 +38,14 @@ export function tableDefs(props: TestsTableDefsProps): ColumnDefinition[] {
       cellRenderer: (item: TestModel) => {
         return (
           <div className={styles.actions}>
-            <Button variant="icon-open" onClick={() => openTest(item.id)}></Button>
+            <Button
+              variant="icon-open"
+              onClick={() => openTest(item.id)}
+            ></Button>
+            <Button
+              variant="icon-edit"
+              onClick={() => editTest(item.id)}
+            ></Button>
             <Button
               variant="icon-remove"
               onClick={() => deleteTest(item.id)}
